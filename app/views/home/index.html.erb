@@ -1,1 +1,62 @@
-こんにちは
+<div class="container mx-auto p-4">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- 左側配置 -->
+    <div class="md:col-span-2">
+      <!-- カレンダーコンポーネント -->
+      <div class="bg-white rounded-3xl shadow p-6">
+        <h2 class="text-xl font-bold">学習カレンダー</h2>
+        
+        <!-- あとで月選択追加 -->
+        <div class="flex justify-end items-center mb-4 gap-2">
+          <button class="text-sm">前月</button>
+          <span class="text-sm font-medium">2025年4月</span>
+          <button class="text-sm">翌月</button>
+        </div>
+        
+        <!-- カレンダー曜日表示 -->
+        <div class="grid grid-cols-7 mb-2">
+          <% %w(日 月 火 水 木 金 土).each do |day| %>
+            <div class="text-center text-sm font-medium py-2">
+              <%= day %>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- あとでカレンダー表示予定 -->
+      </div>
+
+      
+      <!-- 学習記録一覧 -->
+      <div class="bg-white rounded-3xl shadow p-6 mt-6">
+        <h2 class="text-xl font-bold">最近の学習記録</h2>
+      </div>
+    </div>
+    
+    <!-- 学習記録フォーム -->
+    <div class="md:col-span-1">
+      <div class="bg-white rounded-3xl shadow p-6">
+        <div class="mb-4">
+          <h2 class="text-xl font-bold">学習を記録</h2>
+        </div>
+        
+        <form>
+          <div class="mb-4">
+            <label class="text-sm">日付</label>
+          </div>
+          
+          <div class="mb-4">
+            <label class="text-sm">学習時間（分）</label>
+          </div>
+          
+          <div class="mb-4">
+            <label class="text-sm">学習内容</label>
+          </div>
+          
+          <div class="mb-4">
+            <label class="text-sm">メモ（任意）</label>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
