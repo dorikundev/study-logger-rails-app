@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>StudyLoggerRailsApp</title>
+    <title>StudyAppRails</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="min-h-screen bg-[#F5F0E8]">
+    <div class="container max-w-6xl mx-auto p-4">
+      <header class="text-center py-8">
+        <h1 class="text-4xl font-bold text-[#DD4124] mb-2">ケイゾク</h1>
+        <p class="text-neutral-600">毎日の学習を楽しく記録しましょう！</p>
+      </header>
+
+      <%= yield %>
+    </div>
   </body>
 </html>
