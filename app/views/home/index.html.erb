@@ -6,23 +6,42 @@
       <div class="bg-white rounded-3xl shadow p-6">
         <h2 class="text-xl font-bold">学習カレンダー</h2>
         
-        <!-- あとで月選択追加 -->
         <div class="flex justify-end items-center mb-4 gap-2">
-          <button class="text-sm">前月</button>
-          <span class="text-sm font-medium">2025年4月</span>
-          <button class="text-sm">翌月</button>
+            <%= link_to "← 前月", home_index_path(year: @previous_month.year, month: @previous_month.month) %>
+            <span class="text-sm font-medium"><%= "#{@year}年#{@month}月" %></span>
+            <%= link_to "翌月 →", home_index_path(year: @next_month.year, month: @next_month.month) %>
         </div>
         
         <!-- カレンダー曜日表示 -->
-        <div class="grid grid-cols-7 mb-2">
-          <% %w(日 月 火 水 木 金 土).each do |day| %>
-            <div class="text-center text-sm font-medium py-2">
-              <%= day %>
-            </div>
-          <% end %>
-        </div>
+        <div class="grid grid-cols-7 mb-2 gap-2">
+            <% %w(日 月 火 水 木 金 土).each do |day| %>
+                <div class="text-center text-sm font-medium py-2">
+                <%= day %>
+                </div>
+            <% end %>
+            <% @calendar_days.each do |date| %>
+                <% 
+                date_str = date.to_s
+                day_data = @daily_data[date_str] || { minutes: 0, heat_level: 0, subjects: {} }
+                is_current_month = date.month == @month
+                month_class = is_current_month ? "current-month" : "other-month opacity-50"
+                
+                # レベルに基づく色設定
+                bg_colors = ['#F5F0E8', '#FFE5E0', '#FFCCC2', '#FF9E8C', '#DD4124']
+                bg_color = bg_colors[day_data[:heat_level]]
+                text_color = day_data[:heat_level] == 4 ? "text-white" : ""
+                %>
+                
+                <!-- カレンダー表示 -->
+                <div 
+                class="day-cell aspect-square flex flex-col items-center justify-center rounded-xl <%= month_class %> <%= text_color %>"
+                style="background-color: <%= bg_color %>;"
+                >
+                    <%= date.day %>
+                </div>
 
-        <!-- あとでカレンダー表示予定 -->
+            <% end %>
+        </div>
       </div>
 
       
