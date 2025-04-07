@@ -1,4 +1,14 @@
 Rails.application.routes.draw do
+  get 'home/index'
+
+  # ホーム画面をルートに設定
+  root "home#index"
+
+  # 科目管理のリソース
+  resources :study_subjects
+  # 学習記録のリソース
+  resources :study_sessions
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
