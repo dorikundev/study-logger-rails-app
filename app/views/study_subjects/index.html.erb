@@ -1,0 +1,33 @@
+<div class="container mx-auto px-4">
+  <div class="grid grid-cols-3 gap-6">
+    <!-- 科目一覧コンポーネント -->
+    <div class="col-span-2 bg-white rounded-3xl shadow p-6">
+      <h2 class="text-xl font-bold">科目一覧</h2>
+        <ul class="divide-y divide-gray-200">
+          <% @study_subjects.each do |subject| %>
+            <li class="py-4 flex justify-between items-center">
+              <div class="flex items-center">
+                <div class="w-4 h-4 rounded-full mr-3" style="background-color: <%= subject.color %>;"></div>
+                <span class="text-gray-800"><%= subject.name %></span>
+              </div>
+              <div class="flex space-x-2">
+                <%= link_to '詳細', study_subject_path(subject), class: "text-blue-600 hover:text-blue-800" %>
+                <%= link_to '編集', edit_study_subject_path(subject), class: "text-blue-600 hover:text-blue-800" %>
+                <%= link_to '削除', study_subject_path(subject), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: "text-red-600 hover:text-red-800" %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+    </div>
+
+    <!-- 新規科目フォーム (右側) -->
+    <div class="col-span-1 bg-white rounded-3xl shadow p-6">
+      <h2 class="text-xl font-bold">新しい科目を追加</h2>
+      <%= render 'form', study_subject: @study_subject, submit_text: "登録する" %>
+    </div>
+  </div>
+
+  <div class="mt-8 mb-8">
+    <%= link_to '学習記録に戻る', root_path, class: "text-red-600 hover:text-red-800" %>
+  </div>
+</div>

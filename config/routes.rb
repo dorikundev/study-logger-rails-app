@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get 'study_subjects/index'
+  get 'study_subjects/new'
+  get 'study_subjects/create'
+  get 'study_subjects/edit'
+  get 'study_subjects/update'
+  get 'study_subjects/destroy'
   get 'home/index'
 
   # ホーム画面をルートに設定
