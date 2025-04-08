@@ -1,0 +1,19 @@
+{
+    "name": "Keizoku Study Logger",
+    "description": "A study tracking application",
+    "keywords": ["ruby", "rails"],
+    "website": "https://github.com/dorikundev/study-logger-rails-app",
+    "repository": "https://github.com/dorikundev/study-logger-rails-app",
+    "env": {
+      "RAILS_ENV": "production",
+      "RAILS_SERVE_STATIC_FILES": "true"
+    },
+    "buildpacks": [
+      {
+        "url": "heroku/ruby"
+      },
+      {
+        "url": "heroku/nodejs"
+      }
+    ]
+  }
