@@ -1,2 +1,6 @@
-<h1>StudySessions#edit</h1>
-<p>Find me in app/views/study_sessions/edit.html.erb</p>
+<div class="container mx-auto p-4">
+  <%= render 'form', 
+    study_session: @study_session, 
+    title: "学習記録の編集", 
+    submit_text: "更新する" %>
+</div>
