@@ -1,0 +1,43 @@
+<div class="bg-white rounded-2xl p-6 shadow-md">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-bold text-gray-800"><%= title %></h2>
+  </div>
+
+  <%= form_with(model: @study_session, local: true) do |form| %>
+    <% if study_session.errors.any? %>
+      <div class="bg-red-50 text-red-500 p-4 rounded-lg mb-6">
+        <ul class="list-disc pl-5 mt-2">
+          <% study_session.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>      </div>
+    <% end %>
+
+    <div class="mb-4">
+      <%= form.label :date, "日付", class: "block text-sm text-gray-600 mb-2" %>
+      <%= form.date_field :date, class: "w-full px-3 py-2 border border-gray-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-[#DD4124]" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :study_subject_id, "学習内容", class: "block text-sm text-gray-600 mb-2" %>
+      <%= form.collection_select :study_subject_id, @study_subjects, :id, :name, 
+          { prompt: "科目を選択してください" }, 
+          class: "w-full px-3 py-2 border border-gray-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-[#DD4124]" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :duration, "学習時間（分）", class: "block text-sm text-gray-600 mb-2" %>
+      <%= form.number_field :duration, min: 1, placeholder: "30", class: "w-full px-3 py-2 border border-gray-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-[#DD4124]" %>
+    </div>
+
+    <div class="mb-6">
+      <%= form.label :notes, "メモ（任意）", class: "block text-sm text-gray-600 mb-2" %>
+      <%= form.text_area :notes, rows: 4, placeholder: "今日の学習内容や感想を記録しましょう", class: "w-full px-3 py-2 border border-gray-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-[#DD4124]" %>
+    </div>
+
+    <div class="flex justify-end">
+      <%= link_to "キャンセル", home_index_path, class: "px-4 py-2 text-gray-700 rounded-xl mr-2" %>
+      <%= form.submit submit_text, class: "bg-[#DD4124] hover:bg-[#C93A1D] text-white py-2 px-6 rounded-xl font-medium cursor-pointer transition" %>
+    </div>
+  <% end %>
+</div>
