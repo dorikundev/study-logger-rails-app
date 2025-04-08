@@ -1,2 +1,53 @@
-<h1>StudySessions#show</h1>
-<p>Find me in app/views/study_sessions/show.html.erb</p>
+<div class="container mx-auto p-4">
+  <div class="bg-white rounded-3xl shadow p-6">
+    <div class="mb-6">
+        <%= link_to "← 戻る", root_path, class: "text-gray-600 hover:text-gray-900" %>
+        <h1 class="text-xl font-bold mt-4">学習記録</h1>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div>
+        <div class="mb-4">
+          <p class="text-sm text-gray-500">日付</p>
+          <p class="text-lg font-semibold"><%= @study_session.date.strftime('%Y年%m月%d日') %></p>
+        </div>
+        
+        <div class="mb-4">
+          <p class="text-sm text-gray-500">教科</p>
+          <span class="inline-block px-3 py-1 text-base rounded-full mt-1" style="background-color: <%= @study_session.study_subject.color %>30;">
+            <%= @study_session.study_subject.name %>
+          </span>
+        </div>
+      </div>
+      
+      <div>
+        <div class="mb-4">
+          <p class="text-sm text-gray-500">学習時間</p>
+          <% hours = @study_session.duration / 60 %>
+          <% minutes = @study_session.duration % 60 %>
+          <p class="text-lg font-semibold">
+            <%= hours > 0 ? "#{hours}時間" : "" %> <%= minutes > 0 ? "#{minutes}分" : "" %>
+          </p>
+        </div>
+        
+        <div class="mb-4">
+          <p class="text-sm text-gray-500">作成日時</p>
+          <p class="text-base"><%= @study_session.created_at.strftime('%Y/%m/%d %H:%M') %></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mb-6">
+      <p class="text-sm text-gray-500 mb-2">メモ</p>
+      <div class="bg-gray-50 p-4 rounded-xl min-h-32">
+        <% if @study_session.notes.present? %>
+          <p class="whitespace-pre-wrap"><%= @study_session.notes %></p>
+        <% else %>
+          <p class="text-gray-400">メモはありません</p>
+        <% end %>
+      </div>
+    </div>
+    
+    <%= link_to "編集", edit_study_session_path(@study_session), class: "bg-[#DD4124] hover:bg-[#C93A1D] text-white py-2 px-6 rounded-xl font-medium cursor-pointer transition" %>
+  </div>
+</div>
