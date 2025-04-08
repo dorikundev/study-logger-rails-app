@@ -11,6 +11,7 @@
                 <span class="text-gray-800"><%= subject.name %></span>
               </div>
               <div class="flex space-x-2">
+                <%= link_to '詳細', study_subject_path(subject), class: "text-blue-600 hover:text-blue-800" %>
                 <%= link_to '編集', edit_study_subject_path(subject), class: "text-blue-600 hover:text-blue-800" %>
                 <%= link_to '削除', study_subject_path(subject), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: "text-red-600 hover:text-red-800" %>
               </div>
