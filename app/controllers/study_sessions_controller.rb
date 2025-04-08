@@ -17,7 +17,12 @@ class StudySessionsController < ApplicationController
 
   def create
     @study_session = StudySession.new(study_session_params)
-    redirect_to home_index_path
+
+    if @study_session.save
+      redirect_to home_index_path
+    else
+      redirect_to home_index_path(study_session: study_session_params)
+    end
   
   end
 
@@ -27,7 +32,7 @@ class StudySessionsController < ApplicationController
   def update
     @study_session = StudySession.find(params[:id])
     if @study_session.update(study_session_params)
-      redirect_to @study_session
+      redirect_to @study_session, notice: '学習記録が更新されました。'
     else
       @study_subjects = StudySubject.all
       render :edit
@@ -36,7 +41,7 @@ class StudySessionsController < ApplicationController
 
   def destroy
     @study_session.destroy
-    redirect_to study_sessions_path,
+    redirect_to study_sessions_path, notice: '学習記録を削除しました'
   end
 
   private
