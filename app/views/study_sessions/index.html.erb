@@ -1,2 +1,7 @@
-<h1>StudySessions#index</h1>
-<p>Find me in app/views/study_sessions/index.html.erb</p>
+<!-- 学習記録一覧 -->
+<div class="bg-white rounded-3xl shadow p-6 mt-6 w-full">
+  <h2 class="text-xl font-bold mb-4">学習記録</h2>
+    <div class="overflow-x-auto">
+        <%= render 'shared/study_sessions_table', study_sessions: @study_sessions %>
+    </div>
+</div>
