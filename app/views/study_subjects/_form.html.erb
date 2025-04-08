@@ -1,0 +1,55 @@
+<%= form_with(model: study_subject, local: true) do |form| %>
+    <% if study_subject.errors.any? %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <ul class="list-disc pl-5">
+          <% study_subject.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="mb-4">
+        <%= form.label :name, "科目名", class: "text-gray-700 text-sm font-bold mb-3" %>
+        <%= form.text_field :name, 
+        class: "w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none",
+        placeholder: "科目名を入力" %>
+    </div>
+  
+    <div class="mb-4">
+      <%= form.label :color, "カラー", class: "text-gray-700 text-sm font-bold mb-3" %>
+      <div class="grid grid-cols-5 gap-2">
+        <% [
+          "#DD4124", # ケイゾクブランドカラー（赤）
+          "#3B82F6", # 青
+          "#10B981", # 緑
+          "#F59E0B", # オレンジ
+          "#8B5CF6", # 紫
+          "#EC4899", # ピンク
+          "#14B8A6", # ターコイズ
+          "#F97316", # 深いオレンジ
+          "#6366F1", # インディゴ
+          "#64748B"  # スレート
+        ].each do |color| %>
+          <div class="color-option">
+            <label class="color-select-label">
+              <%= form.radio_button :color, color, class: "sr-only color-radio" %>
+              <div class="w-10 h-10 rounded-full cursor-pointer color-select" 
+                   style="background-color: <%= color %>;" 
+                   data-color="<%= color %>"></div>
+            </label>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <%= form.submit submit_text, class: "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" %>
+<% end %>
+  
+  <style>
+    .color-radio:checked + .color-select {
+      box-shadow: 0 0 0 3px white, 0 0 0 4px #DD4124;
+      transform: scale(1.1);
+    }
+  </style>
+  
