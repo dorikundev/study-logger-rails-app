@@ -1,0 +1,21 @@
+<div class="container mx-auto px-4 py-3">
+  <div class="flex items-center justify-center">
+    <!-- ナビゲーション -->
+    <nav>
+      <ul class="flex space-x-20">
+        <li>
+          <%= link_to "ホーム", root_path, class: "font-medium #{request.path == root_path ? 'text-red-600' : 'text-gray-700 hover:text-red-500'}" %>
+        </li>
+        <li>
+          <%= link_to "学習記録", study_sessions_path, class: "font-medium #{request.path.start_with?('/study_sessions') && params[:action] != 'new' ? 'text-red-600' : 'text-gray-700 hover:text-red-500'}" %>
+        </li>
+        <li>
+          <%= link_to "記録作成", new_study_session_path, class: "font-medium #{request.path.include?('new_study_session') || params[:action] == 'new' && controller_name == 'study_sessions' ? 'text-red-600' : 'text-gray-700 hover:text-red-500'}" %>
+        </li>
+        <li>
+          <%= link_to "学習科目", study_subjects_path, class: "font-medium #{request.path.start_with?('/study_subjects') ? 'text-red-600' : 'text-gray-700 hover:text-red-500'}" %>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
