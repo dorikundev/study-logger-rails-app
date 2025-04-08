@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  get 'study_sessions/index'
+  get 'study_sessions/show'
+  get 'study_sessions/new'
+  get 'study_sessions/create'
+  get 'study_sessions/edit'
+  get 'study_sessions/update'
+  get 'study_sessions/destroy'
   get 'study_subjects/index'
   get 'study_subjects/new'
   get 'study_subjects/create'
