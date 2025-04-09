@@ -17,6 +17,13 @@ Rails.application.routes.draw do
   # ホーム画面をルートに設定
   root "home#index"
 
+  resources :study_subjects do
+    member do
+      patch :archive
+      patch :unarchive
+    end
+  end
+
   # 科目管理のリソース
   resources :study_subjects
   # 学習記録のリソース
