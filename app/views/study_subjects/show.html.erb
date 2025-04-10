@@ -1,15 +1,26 @@
 <div class="container mx-auto p-4">
   <div class="bg-white rounded-3xl shadow p-6">
+    <%= link_to "← 戻る", root_path, class: "text-gray-600 hover:text-gray-900" %>
     <div class="flex items-center mb-4">
       <div class="w-6 h-6 rounded-full mr-3" style="background-color: <%= @study_subject.color %>;"></div>
       <h2 class="text-xl font-bold"><%= @study_subject.name %></h2>
+      <div>
+        <% if @study_subject.archived? %>
+            <%= button_to 'アーカイブ解除', unarchive_study_subject_path(@study_subject), method: :patch, class: "px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors" %>
+        <% else %>
+            <%= button_to 'アーカイブ', archive_study_subject_path(@study_subject), method: :patch, class: "px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors", data: { confirm: "この科目をアーカイブしますか？アーカイブされた科目は新しい学習記録に使用できなくなります。" } %>
+        <% end %>
+      </div>
+    <%= link_to '編集', edit_study_subject_path(@study_subject), class: "text-blue-600 hover:text-blue-800" %>
     </div>
-      <h3 class="text-xl font-bold mb-3">学習記録</h3>
-      <!-- ここに学習記録を作成-->
-
-    <div class="flex justify-between">
+    <h3 class="text-xl font-bold mb-3">学習記録</h3>
+    
+    <!-- 学習記録一覧テーブル -->
+    <div class="overflow-x-auto">
+        <%= render 'shared/study_sessions_table', study_sessions: @study_subject.study_sessions.order(date: :desc) %>
+    
+    <div class="flex justify-between mt-6">
       <%= link_to '編集', edit_study_subject_path(@study_subject), class: "text-blue-600 hover:text-blue-800" %>
-      <%= link_to '科目一覧に戻る', study_subjects_path, class: "text-red-600 hover:text-red-800" %>
     </div>
   </div>
 </div>
