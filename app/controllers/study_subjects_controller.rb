@@ -4,6 +4,9 @@ class StudySubjectsController < ApplicationController
     def index
       @study_subjects = StudySubject.all
       @study_subject = StudySubject.new
+      @active_subjects = StudySubject.where(archived: false)
+      @archived_subjects = StudySubject.where(archived: true)
+      @study_subject = StudySubject.new
     end
   
     def show
@@ -27,7 +30,6 @@ class StudySubjectsController < ApplicationController
     def edit
         @study_subject = StudySubject.find(params[:id])
         @study_subjects = StudySubject.all 
-      
     end
   
     def update
@@ -39,6 +41,23 @@ class StudySubjectsController < ApplicationController
     end
   
     def destroy
+      @study_subject = StudySubject.find(params[:id])
+      @study_subject.destroy  
+      redirect_to study_subjects_path
+    end
+
+    def archive
+      @study_subject = StudySubject.find(params[:id])
+      @study_subject.update(archived: true)
+      
+      redirect_to study_subject_path(@study_subject), notice: "#{@study_subject.name}をアーカイブしました"
+    end
+
+    def unarchive
+      @study_subject = StudySubject.find(params[:id])
+      @study_subject.update(archived: false)
+      
+      redirect_to study_subject_path(@study_subject), notice: "#{@study_subject.name}のアーカイブを解除しました"
     end
   
     private
