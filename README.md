@@ -54,7 +54,6 @@ GitHubのコントリビューショングラフのように、学習の頻度�
 - PostgreSQL（データベース）
 
 ### インフラ・開発環境
-- Docker
 - Heroku（デプロイ）
 - Git / GitHub（バージョン管理）
 
