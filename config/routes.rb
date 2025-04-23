@@ -13,6 +13,14 @@ Rails.application.routes.draw do
   get 'study_subjects/update'
   get 'study_subjects/destroy'
   get 'home/index'
+  
+  # OmniAuth
+  get '/auth/:provider/callback', to: 'sessions#create'
+  post '/auth/:provider/callback', to: 'sessions#create'  # POSTメソッドも受け付ける
+  get '/auth/failure', to: 'sessions#failure'
+  
+  # ログアウト
+  delete '/logout', to: 'sessions#destroy'
 
   # ホーム画面をルートに設定
   root "home#index"
