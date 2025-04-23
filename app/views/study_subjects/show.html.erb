@@ -1,26 +1,150 @@
-<div class="container mx-auto p-4">
-  <div class="bg-white rounded-3xl shadow p-6">
-    <%= link_to "← 戻る", root_path, class: "text-gray-600 hover:text-gray-900" %>
-    <div class="flex items-center mb-4">
-      <div class="w-6 h-6 rounded-full mr-3" style="background-color: <%= @study_subject.color %>;"></div>
-      <h2 class="text-xl font-bold"><%= @study_subject.name %></h2>
-      <div>
-        <% if @study_subject.archived? %>
-            <%= button_to 'アーカイブ解除', unarchive_study_subject_path(@study_subject), method: :patch, class: "px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors" %>
-        <% else %>
-            <%= button_to 'アーカイブ', archive_study_subject_path(@study_subject), method: :patch, class: "px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors", data: { confirm: "この科目をアーカイブしますか？アーカイブされた科目は新しい学習記録に使用できなくなります。" } %>
+<div class="container mx-auto p-4 md:p-6 max-w-5xl">
+  <div class="bg-white rounded-3xl shadow-md p-6 md:p-8">
+    <%# ヘッダー部分 %>
+    <div class="mb-6">
+      <%= link_to root_path, class: "inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors mb-4" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        戻る
+      <% end %>
+      
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-center">
+          <div class="w-8 h-8 rounded-full mr-3 flex-shrink-0" style="background-color: <%= @study_subject.color %>;"></div>
+          <h2 class="text-2xl font-bold text-gray-800"><%= @study_subject.name %></h2>
+        </div>
+        
+        <div class="flex items-center gap-3 flex-wrap">
+          <%= link_to edit_study_subject_path(@study_subject), class: "inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+            </svg>
+            編集
+          <% end %>
+          
+          <% if @study_subject.archived? %>
+            <%= button_to unarchive_study_subject_path(@study_subject), method: :patch, class: "inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+              </svg>
+              アーカイブ解除
+            <% end %>
+          <% else %>
+            <%= button_to archive_study_subject_path(@study_subject), method: :patch, 
+                class: "inline-flex items-center px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors text-sm font-medium", 
+                data: { turbo_confirm: "この科目をアーカイブしますか？アーカイブされた科目は新しい学習記録に使用できなくなります。" } do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
+                <path fill-rule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clip-rule="evenodd" />
+              </svg>
+              アーカイブ
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <%# 統計情報カード %>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div class="bg-blue-50 rounded-xl p-4 shadow-sm">
+        <h3 class="text-sm text-blue-600 font-medium mb-1">総学習時間</h3>
+        <p class="text-2xl font-bold text-gray-800">
+          <%= @study_subject.study_sessions.sum(:duration) / 60 %>時間 
+          <%= @study_subject.study_sessions.sum(:duration) % 60 %>分
+        </p>
+      </div>
+      
+      <div class="bg-green-50 rounded-xl p-4 shadow-sm">
+        <h3 class="text-sm text-green-600 font-medium mb-1">学習セッション数</h3>
+        <p class="text-2xl font-bold text-gray-800"><%= @study_subject.study_sessions.count %>回</p>
+      </div>
+      
+      <div class="bg-purple-50 rounded-xl p-4 shadow-sm">
+        <h3 class="text-sm text-purple-600 font-medium mb-1">最近の学習</h3>
+        <p class="text-2xl font-bold text-gray-800">
+          <% if @study_subject.study_sessions.order(date: :desc).first %>
+            <%= l(@study_subject.study_sessions.order(date: :desc).first.date) %>
+          <% else %>
+            -
+          <% end %>
+        </p>
+      </div>
+    </div>
+    
+    <%# 学習記録セクション %>
+    <div class="mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-bold text-gray-800">学習記録</h3>
+        <%= link_to new_study_session_path(study_subject_id: @study_subject.id), class: "inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          新規学習を記録
         <% end %>
       </div>
-    <%= link_to '編集', edit_study_subject_path(@study_subject), class: "text-blue-600 hover:text-blue-800" %>
-    </div>
-    <h3 class="text-xl font-bold mb-3">学習記録</h3>
-    
-    <!-- 学習記録一覧テーブル -->
-    <div class="overflow-x-auto">
-        <%= render 'shared/study_sessions_table', study_sessions: @study_subject.study_sessions.order(date: :desc) %>
-    
-    <div class="flex justify-between mt-6">
-      <%= link_to '編集', edit_study_subject_path(@study_subject), class: "text-blue-600 hover:text-blue-800" %>
+      
+      <%# 学習記録一覧テーブル %>
+      <% if @study_subject.study_sessions.present? %>
+        <div class="overflow-x-auto bg-gray-50 rounded-xl shadow-sm">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-100">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">日付</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">時間</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">メモ</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @study_subject.study_sessions.order(date: :desc).each do |session| %>
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <%= l(session.date) %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    <%= session.duration / 60 %>時間 <%= session.duration % 60 %>分
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-700">
+                    <div class="line-clamp-2">
+                      <%= session.notes.presence || "-" %>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex items-center justify-end gap-2">
+                      <%= link_to edit_study_session_path(session), class: "text-blue-600 hover:text-blue-900 p-1" do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                      <% end %>
+                      <%= button_to study_session_path(session), method: :delete, 
+                          class: "text-red-600 hover:text-red-900 p-1", 
+                          data: { turbo_confirm: "この学習記録を削除してもよろしいですか？" } do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="bg-gray-50 rounded-xl p-8 text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          <p class="text-gray-600 mb-4">この科目の学習記録はまだありません</p>
+          <%= link_to new_study_session_path(study_subject_id: @study_subject.id), class: "inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            最初の学習を記録
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
