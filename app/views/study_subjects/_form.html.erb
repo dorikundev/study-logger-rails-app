@@ -1,49 +1,56 @@
-<%= form_with(model: study_subject, local: true) do |form| %>
-    <% if study_subject.errors.any? %>
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-        <ul class="list-disc pl-5">
-          <% study_subject.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+<%# 科目作成・編集フォーム %>
+<div class="container mx-auto p-4 md:p-6 max-w-4xl">
+  <div class="bg-white rounded-3xl shadow-md p-6 md:p-8">
+    <%# ヘッダー部分 %>
+    <div class="mb-6">
+      <%= link_to "科目一覧に戻る", study_subjects_path, class: "text-gray-600 hover:text-gray-900 transition-colors mb-4 inline-block" %>
+      
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <h1 class="text-2xl font-bold text-gray-800">
+          <%= study_subject.persisted? ? "科目を編集" : "新しい科目を追加" %>
+        </h1>
       </div>
-    <% end %>
-  
-    <div class="mb-4">
-        <%= form.label :name, "科目名", class: "text-gray-700 text-sm font-bold mb-3" %>
-        <%= form.text_field :name, 
-        class: "w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none",
-        placeholder: "科目名を入力" %>
     </div>
-  
-    <div class="mb-4">
-      <%= form.label :color, "カラ
-      ー", class: "text-gray-700 text-sm font-bold mb-3" %>
-      <div class="grid grid-cols-5 gap-2">
-        <% [
-          "#DD4124", # ケイゾクブランドカラー（赤）
-          "#3B82F6", # 青
-          "#10B981", # 緑
-          "#F59E0B", # オレンジ
-          "#8B5CF6", # 紫
-          "#EC4899", # ピンク
-          "#14B8A6", # ターコイズ
-          "#F97316", # 深いオレンジ
-          "#6366F1", # インディゴ
-          "#64748B"  # スレート
-        ].each do |color| %>
-          <div class="color-option">
-            <label class="color-select-label">
-              <%= form.radio_button :color, color, class: "sr-only color-radio" %>
-              <div class="w-10 h-10 rounded-full cursor-pointer color-select" 
-                   style="background-color: <%= color %>;" 
-                   data-color="<%= color %>"></div>
-            </label>
-          </div>
+
+    <%= form_with(model: study_subject) do |form| %>
+      <div class="mb-4">
+        <%= form.label :name, "科目名", class: "block text-gray-700 text-sm font-medium mb-2" %>
+        <%= form.text_field :name,
+              class: "w-full py-2 px-3 bg-gray-50 border #{study_subject.errors[:name].any? ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500",
+              placeholder: "科目名を入力" %>
+            
+        <% if study_subject.errors[:name].any? %>
+          <p class="text-red-500 text-xs mt-1"><%= study_subject.errors[:name].first %></p>
         <% end %>
       </div>
-    </div>
-    
-    <%= form.submit submit_text, class: "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" %>
-<% end %>
-  
+      
+      <div class="mb-6">
+        <%= form.label :color, "カラー", class: "block text-gray-700 text-sm font-medium mb-2" %>
+        <div class="grid grid-cols-5 sm:grid-cols-10 gap-2" data-controller="color-selector">
+          <% [
+            "#DD4124", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6", 
+            "#EC4899", "#14B8A6", "#F97316", "#6366F1", "#64748B"
+          ].each do |color| %>
+            <div class="color-option" data-color-selector-target="option" data-action="click->color-selector#select">
+              <label class="color-select-label">
+                <%= form.radio_button :color, color, class: "sr-only color-radio" %>
+                <div class="w-8 h-8 rounded-full cursor-pointer border-2 transition-all hover:scale-110 color-select <%= study_subject.color == color ? 'border-gray-800' : 'border-transparent' %>"
+                     style="background-color: <%= color %>;"
+                     data-color="<%= color %>"></div>
+              </label>
+            </div>
+          <% end %>
+        </div>
+              
+        <% if study_subject.errors[:color].any? %>
+          <p class="text-red-500 text-xs mt-1"><%= study_subject.errors[:color].first %></p>
+        <% end %>
+      </div>
+      
+      <div class="flex justify-end">
+        <%= link_to "キャンセル", study_subjects_path, class: "px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm font-medium mr-2" %>
+        <%= form.submit study_subject.persisted? ? "更新する" : "作成する", class: "px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium" %>
+      </div>
+    <% end %>
+  </div>
+</div>

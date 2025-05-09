@@ -1,0 +1,33 @@
+ja:
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "バリデーションに失敗しました: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "%{record}が存在しているので削除できません"
+          has_many: "%{record}が存在しているので削除できません"
+      models:
+        study_subject:
+          attributes:
+            name:
+              blank: "科目名を入力してください"
+              taken: "この科目名は既に使用されています"
+            color:
+              blank: "カラーを選択してください"
+        study_session:
+          attributes:
+            date:
+              blank: "日付を入力してください"
+            duration:
+              blank: "学習時間を入力してください"
+              not_a_number: "学習時間は数値で入力してください"
+              greater_than: "学習時間は0より大きい値を入力してください"
+            study_subject_id:
+              blank: "科目を選択してください"
+  
+  # 日付関連の翻訳
+  date:
+    formats:
+      default: "%Y/%m/%d"
+      long: "%Y年%m月%d日(%a)"
+      short: "%m/%d"

@@ -1,0 +1,19 @@
+<%= link_to study_subject_path(subject), class: "block bg-gray-50 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow #{archived ? 'opacity-70' : ''}" do %>
+  <div class="flex items-center">
+    <div class="w-6 h-6 rounded-full mr-3" style="background-color: <%= subject.color %>;"></div>
+    <div>
+      <h3 class="font-medium text-gray-900">
+        <%= subject.name %>
+        <% if archived %>
+          <span class="text-xs text-gray-500">(アーカイブ済)</span>
+        <% end %>
+      </h3>
+      <p class="text-sm text-gray-500">
+        セッション数: <%= subject.study_sessions.count %>件
+        <% if subject.study_sessions.exists? %>
+          / 総時間: <%= subject.total_hours %>時間 <%= subject.total_minutes %>分
+        <% end %>
+      </p>
+    </div>
+  </div>
+<% end %>
